@@ -21,7 +21,7 @@ import {
   LocationTimeBox,
   LocationTimeText,
   LocationTimeTextSmall,
-} from './styles';
+} from './style';
 
 Geocoder.init('AIzaSyDSBIi0ABU5V2mBdo6hHThO7TgmS9VwA7Q');
 
