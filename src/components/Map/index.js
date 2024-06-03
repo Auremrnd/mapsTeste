@@ -1,13 +1,16 @@
 import React, {Component, Fragment} from 'react';
+import {View, Image} from 'react-native';
 import MapView, {Marker} from 'react-native-maps';
-import {Image, View} from 'react-native';
-import {getPixelSize} from '../../utils';
 import Geocoder from 'react-native-geocoding';
+//import Geolocation from '@react-native-community/geolocation';
+import {PermissionsAndroid} from 'react-native'; // Importe PermissionsAndroid
 
-import Details from '../Details';
+import {getPixelSize} from '../../utils';
 
 import Search from '../Search';
 import Directions from '../Directions';
+import Details from '../Details';
+
 import markerImage from '../../assets/marker.png';
 import backImage from '../../assets/back.png';
 
@@ -18,21 +21,29 @@ import {
   LocationTimeBox,
   LocationTimeText,
   LocationTimeTextSmall,
-} from './style';
+} from './styles';
 
 Geocoder.init('AIzaSyDSBIi0ABU5V2mBdo6hHThO7TgmS9VwA7Q');
 
 export default class Map extends Component {
   state = {
-    region: null,
+    region: {
+      latitude: -25.7034131, // Coordenada de latitude desejada
+      longitude: -53.0995015, // Coordenada de longitude desejada
+      latitudeDelta: 0.0143,
+      longitudeDelta: 0.0134,
+    },
     destination: null,
     duration: null,
     location: null,
   };
 
   async componentDidMount() {
-    navigator.geolocation.getCurrentPosition(
-      async ({coords: {latitude, longitude}}) => {
+    await this.requestLocationPermission(); // Solicita permissão de localização quando o componente é montado
+    /*
+    Geolocation.getCurrentPosition(
+      async position => {
+        const {latitude, longitude} = position.coords;
         const response = await Geocoder.from({latitude, longitude});
         const address = response.results[0].formatted_address;
         const location = address.substring(0, address.indexOf(','));
@@ -46,14 +57,34 @@ export default class Map extends Component {
             longitudeDelta: 0.0134,
           },
         });
-      }, //sucesso
-      () => {}, //erro
+      },
+      error => console.error(error),
       {
-        timeout: 2000,
+        timeout: 5000,
         enableHighAccuracy: true,
         maximumAge: 1000,
       },
-    );
+    );*/
+  }
+
+  async requestLocationPermission() {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        {
+          title: 'Permissão de localização',
+          message: 'Esse aplicativo precisa acessar sua localização.',
+          buttonPositive: 'OK',
+        },
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        console.log('Permissão concedida');
+      } else {
+        console.log('Permissão recusada');
+      }
+    } catch (err) {
+      console.warn(err);
+    }
   }
 
   handleLocationSelected = (data, {geometry}) => {
@@ -84,7 +115,7 @@ export default class Map extends Component {
           region={region}
           showsUserLocation
           loadingEnabled
-          ref={el => (this.MapView = el)}>
+          ref={el => (this.mapView = el)}>
           {destination && (
             <Fragment>
               <Directions
@@ -93,7 +124,7 @@ export default class Map extends Component {
                 onReady={result => {
                   this.setState({duration: Math.floor(result.duration)});
 
-                  this.MapView.fitToCoordinates(result.coordinates, {
+                  this.mapView.fitToCoordinates(result.coordinates, {
                     edgePadding: {
                       right: getPixelSize(50),
                       left: getPixelSize(50),
@@ -103,6 +134,7 @@ export default class Map extends Component {
                   });
                 }}
               />
+
               <Marker
                 coordinate={destination}
                 anchor={{x: 0, y: 0}}
