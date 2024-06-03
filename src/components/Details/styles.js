@@ -9,7 +9,7 @@ export const Container = styled.View`
   shadow-color: #000;
   shadow-offset: 0 0;
   shadow-opacity: 0.2;
-  shadow-radius: 10;
+  shadow-radius: 10px;
   elevation: 3;
   border: 1px solid #ddd;
   align-items: center;
@@ -31,7 +31,7 @@ export const TypeImage = styled.Image`
   margin: 10px 0;
 `;
 
-export const ResquestButton = styled.TouchableOpacity`
+export const RequestButton = styled.TouchableOpacity`
   background: #222;
   justify-content: center;
   align-items: center;
