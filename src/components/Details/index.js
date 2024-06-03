@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {
   Container,
-  TyperTitle,
+  TypeTitle,
   TypeDescription,
   TypeImage,
   RequestButton,
@@ -13,15 +13,16 @@ export default class Details extends Component {
   render() {
     return (
       <Container>
-        <TyperTitle>Caroneiro</TyperTitle>
-        <TypeDescription>Pegar Carona</TypeDescription>
+        <TypeTitle>Borai Aí</TypeTitle>
+        <TypeDescription>Caroneiro</TypeDescription>
 
         <TypeImage source={uberx} />
-        <TyperTitle>Bora Aí</TyperTitle>
+        <TypeTitle>Pegar Carona</TypeTitle>
         <TypeDescription>R$ 3,00</TypeDescription>
 
-        <RequestButton onPress={() => {}}></RequestButton>
-        <RequestButtonText>SOLICITAR CARONA</RequestButtonText>
+        <RequestButton onPress={() => {}}>
+          <RequestButtonText>SOLICITAR CARONA</RequestButtonText>
+        </RequestButton>
       </Container>
     );
   }
