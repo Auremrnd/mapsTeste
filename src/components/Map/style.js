@@ -10,6 +10,7 @@ export const LocationBox = styled.View`
   border: 1px solid #ddd;
   border-radius: 3px;
   flex-direction: row;
+  margin-top: 20px;
 
   ${Platform.select({
     ios: css`
@@ -31,7 +32,6 @@ export const LocationText = styled.Text`
 export const LocationTimeBox = styled.View`
   background: #222;
   padding: 3px 8px;
-  color: #fff;
 `;
 
 export const LocationTimeText = styled.Text`
@@ -48,6 +48,6 @@ export const LocationTimeTextSmall = styled.Text`
 
 export const Back = styled.TouchableOpacity`
   position: absolute;
-  top: ${Platform.select({ios: 60, android: 40})};
+  top: ${Platform.select({ios: '60px', android: '40px'})};
   left: 20px;
 `;
